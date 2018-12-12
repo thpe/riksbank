@@ -30,3 +30,13 @@ class query:
         df = pd.DataFrame(so)
         df.index = pd.to_datetime(df['date'])
         return df
+
+    def getCalendarDays(self, datefrom, dateto):
+        result = self.client.service.getCalendarDays(datefrom, dateto)
+        so = serialize_object(result)
+        bankday = [b['bankday'] for b in so]
+        date =  [b['caldate'] for b in so]
+        week =  [b['week'] for b in so]
+        weekyear = [b['weekyear'] for b in so]
+        df = pd.DataFrame({'date': date, 'bankday': bankday, 'week': week, 'weekyear': weekyear}).set_index('date')
+        return df
