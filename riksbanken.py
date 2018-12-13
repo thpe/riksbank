@@ -34,7 +34,7 @@ class query:
     def getCalendarDays(self, datefrom, dateto):
         result = self.client.service.getCalendarDays(datefrom, dateto)
         so = serialize_object(result)
-        bankday = [b['bankday'] for b in so]
+        bankday = [True if b['bankday'] == 'Y' else False for b in so]
         date =  [b['caldate'] for b in so]
         week =  [b['week'] for b in so]
         weekyear = [b['weekyear'] for b in so]
