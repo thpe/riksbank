@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="riksbank",
-    version="0.0.2",
+    version="0.0.3",
     author="Thomas Petig",
     author_email="thomas@petig.eu",
     description="Read from riksbankens SOAP API to pandas",
@@ -13,6 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/thpe/riksbank",
     packages=setuptools.find_packages(),
+    install_requires=['zeep', 'pandas'],
+
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
