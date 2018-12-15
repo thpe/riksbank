@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="riksbank",
-    version="0.0.3",
+    version="0.0.4",
     author="Thomas Petig",
     author_email="thomas@petig.eu",
     description="Read from riksbankens SOAP API to pandas",
