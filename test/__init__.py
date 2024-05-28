@@ -1,3 +1,3 @@
 """ just init """
-#pylint: disable=C0103
+# pylint: disable=C0103
 name = 'riksbank-test'

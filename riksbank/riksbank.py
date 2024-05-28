@@ -5,13 +5,13 @@ import json
 import requests
 import pandas as pd
 
+
 class Query:
     """ query class containing the whole API abstraction """
     def __init__(self, user, key):
         """ init, sets user and key for Rest API """
         self.user = user
         self.key = key
-
 
     def get_observations(self, seriesid, datefrom, dateto):
         """ returns a specfic observation for a time intervall """
@@ -37,7 +37,7 @@ class Query:
         week = [ele['weekNumber'] for ele in jsondata]
         weekyear = [ele['weekYear'] for ele in jsondata]
         dfres = pd.DataFrame({'date': date,
-                           'bankday': bankday,
-                           'week': week,
-                           'weekyear': weekyear}).set_index('date')
+                              'bankday': bankday,
+                              'week': week,
+                              'weekyear': weekyear}).set_index('date')
         return dfres
