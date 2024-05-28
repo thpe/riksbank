@@ -12,6 +12,7 @@ def test_read_observation():
     res = query.get_observations('SEKEURPMI', '2024-01-01', '2024-02-01')
     print(res)
 
+
 def test_read_calendardays():
     """ tests to read calendar days """
     print('test calendar days')
@@ -20,6 +21,7 @@ def test_read_calendardays():
     query = riksbank.Query(user, key)
     res = query.get_calendar_days('2024-01-01', '2024-02-01')
     print(res)
+
 
 if __name__ == "__main__":
     test_read_observation()
