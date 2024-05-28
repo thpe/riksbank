@@ -1,20 +1,23 @@
+""" test framework for riksbank """
 import os
 from riksbank import riksbank
 
 def test_read_observation():
+    """ tests to read an observation """
     print('test observations')
-    u = os.environ['RIKSBANK_USER']
-    k = os.environ['RIKSBANK_KEY']`
-    r = riksbank.query(u, k)
-    d = r.getObservations('SEKEURPMI', '2024-01-01', '2024-02-01')
-    print(d)
+    user = os.environ['RIKSBANK_USER']
+    key = os.environ['RIKSBANK_KEY']
+    query = riksbank.Query(user, key)
+    res = query.get_observations('SEKEURPMI', '2024-01-01', '2024-02-01')
+    print(res)
 def test_read_calendardays():
+    """ tests to read calendar days """
     print('test calendar days')
-    u = os.environ['RIKSBANK_USER']
-    k = os.environ['RIKSBANK_KEY']`
-    r = riksbank.query(u, k)
-    d = r.getCalendarDays('2024-01-01', '2024-02-01')
-    print(d)
+    user = os.environ['RIKSBANK_USER']
+    key = os.environ['RIKSBANK_KEY']
+    query = riksbank.Query(user, key)
+    res = query.get_calendar_days('2024-01-01', '2024-02-01')
+    print(res)
 
 
 if __name__ == "__main__":
