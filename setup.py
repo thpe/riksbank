@@ -14,7 +14,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/thpe/riksbank",
     packages=setuptools.find_packages(),
-    install_requires=['json', 'requests', 'pandas'],
+    install_requires=['requests', 'pandas'],
 
     classifiers=[
         "Programming Language :: Python :: 3",
