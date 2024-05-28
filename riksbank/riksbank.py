@@ -21,8 +21,8 @@ class Query:
         print(req.text)
         jsondata = json.loads(req.text)
         print(jsondata)
-        date =  [ele['date'] for ele in jsondata]
-        value =  [ele['value'] for ele in jsondata]
+        date = [ele['date'] for ele in jsondata]
+        value = [ele['value'] for ele in jsondata]
         dfres = pd.Series(data=value, index=date)
         return dfres
 
@@ -33,8 +33,8 @@ class Query:
         print(req.text)
         jsondata = json.loads(req.text)
         bankday = [ele['swedishBankday'] == 'Y' for ele in jsondata]
-        date =  [ele['calendarDate'] for ele in jsondata]
-        week =  [ele['weekNumber'] for ele in jsondata]
+        date = [ele['calendarDate'] for ele in jsondata]
+        week = [ele['weekNumber'] for ele in jsondata]
         weekyear = [ele['weekYear'] for ele in jsondata]
         dfres = pd.DataFrame({'date': date,
                            'bankday': bankday,
