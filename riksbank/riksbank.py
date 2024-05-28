@@ -1,42 +1,43 @@
-# Copyright 2018 Thomas Petig
+""" API abstraction for the swedish central bank """
+# Copyright 2018, 2024 Thomas Petig
 #
-from zeep import Client
-from zeep.helpers import serialize_object
+import json
+import requests
 import pandas as pd
 
-class query:
-    def __init__(self):
-        self.client = Client('https://swea.riksbank.se/sweaWS/wsdl/sweaWS.wsdl')
 
+class Query:
+    """ query class containing the whole API abstraction """
+    def __init__(self, user, key):
+        """ init, sets user and key for Rest API """
+        self.user = user
+        self.key = key
 
-    def getInterestAndExchangeRates(self, groupid, seriesid, datefrom, dateto, average=True, minimum=False, maximum=False, ultimo=False):
-        SGS = {
-                'groupid': groupid,
-                'seriesid': seriesid
-                }
-        searchRequestParameters = {
-                'aggregateMethod': 'W',
-                'avg': average,
-                'datefrom': datefrom,
-                'dateto': dateto,
-                'languageid': 'en',
-                'max': maximum,
-                'min': minimum,
-                'searchGroupSeries': [SGS],
-                'ultimo': ultimo
-                }
-        resp = self.client.service.getInterestAndExchangeRates(searchRequestParameters)
-        so = serialize_object(resp)['groups'][0]['series'][0]['resultrows']
-        df = pd.DataFrame(so)
-        df.index = pd.to_datetime(df['date'])
-        return df
+    def get_observations(self, seriesid, datefrom, dateto):
+        """ returns a specfic observation for a time intervall """
+        querystr = f'https://api.riksbank.se/swea/v1/Observations/{seriesid}/{datefrom}/{dateto}'
+        print(querystr)
+        req = requests.get(querystr, auth=(self.user, self.key), timeout=100)
+        print(req.text)
+        jsondata = json.loads(req.text)
+        print(jsondata)
+        date = [ele['date'] for ele in jsondata]
+        value = [ele['value'] for ele in jsondata]
+        dfres = pd.Series(data=value, index=date)
+        return dfres
 
-    def getCalendarDays(self, datefrom, dateto):
-        result = self.client.service.getCalendarDays(datefrom, dateto)
-        so = serialize_object(result)
-        bankday = [True if b['bankday'] == 'Y' else False for b in so]
-        date =  [b['caldate'] for b in so]
-        week =  [b['week'] for b in so]
-        weekyear = [b['weekyear'] for b in so]
-        df = pd.DataFrame({'date': date, 'bankday': bankday, 'week': week, 'weekyear': weekyear}).set_index('date')
-        return df
+    def get_calendar_days(self, datefrom, dateto):
+        """ get the requested calendar days """
+        querystr = f'https://api.riksbank.se/swea/v1/CalendarDays/{datefrom}/{dateto}'
+        req = requests.get(querystr, auth=(self.user, self.key), timeout=100)
+        print(req.text)
+        jsondata = json.loads(req.text)
+        bankday = [ele['swedishBankday'] == 'Y' for ele in jsondata]
+        date = [ele['calendarDate'] for ele in jsondata]
+        week = [ele['weekNumber'] for ele in jsondata]
+        weekyear = [ele['weekYear'] for ele in jsondata]
+        dfres = pd.DataFrame({'date': date,
+                              'bankday': bankday,
+                              'week': week,
+                              'weekyear': weekyear}).set_index('date')
+        return dfres
